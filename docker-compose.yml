@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  retailpulse-api:
+    build: .
+    container_name: retailpulse-api
+    command: ["api"]
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./artifacts:/app/artifacts
+      - ./mlflow:/app/mlflow
+    environment:
+      - RETAILPULSE_CONFIG=/app/src/config/settings.yaml
+    restart: unless-stopped
+
+  retailpulse-dashboard:
+    build: .
+    container_name: retailpulse-dashboard
+    command: ["dashboard"]
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+      - ./artifacts:/app/artifacts
+    depends_on:
+      - retailpulse-api
+    restart: unless-stopped
+
+  mlflow:
+    image: python:3.11-slim
+    container_name: retailpulse-mlflow
+    working_dir: /mlflow
+    command: >
+      bash -c "pip install mlflow && mlflow server
+      --backend-store-uri /mlflow/mlruns
+      --default-artifact-root /mlflow/mlruns
+      --host 0.0.0.0 --port 5000"
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlflow:/mlflow
+
+  airflow:
+    image: apache/airflow:2.8.1-python3.11
+    container_name: retailpulse-airflow
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/airflow.db
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - .:/app
+    ports:
+      - "8080:8080"
+    command: airflow standalone

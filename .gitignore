@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+.venv/
+venv/
+env/
+
+# Data & artifacts
+data/raw/*.csv
+data/processed/
+data/reference/
+artifacts/
+mlflow/mlruns/
+**/mlruns/
+*.parquet
+*.pkl
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Airflow
+airflow/logs/
+airflow/airflow.db
+airflow/airflow.cfg
+
+# ML / logs
+*.log
+optuna.db
+.coverage
+coverage.xml
+htmlcov/
+
+# Docker
+.env

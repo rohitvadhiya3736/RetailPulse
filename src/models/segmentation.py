@@ -1,4 +1,3 @@
-"""Customer segmentation with KMeans and DBSCAN."""
 
 from __future__ import annotations
 
@@ -20,7 +19,7 @@ logger = get_logger(__name__)
 
 
 class CustomerSegmentation:
-    """RFM-based segmentation using KMeans and DBSCAN."""
+    #RFM-based segmentation using KMeans and DBSCAN
 
     def __init__(self) -> None:
         self.settings = get_settings()

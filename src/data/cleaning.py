@@ -1,4 +1,3 @@
-"""Missing value handling and outlier treatment."""
 
 from __future__ import annotations
 
@@ -11,14 +10,13 @@ logger = get_logger(__name__)
 
 
 class DataCleaner:
-    """Production data cleaning pipeline."""
+    #Production data cleaning pipeline.
 
     def __init__(self, price_cap_percentile: float = 99.5, qty_cap_percentile: float = 99.0) -> None:
         self.price_cap_percentile = price_cap_percentile
         self.qty_cap_percentile = qty_cap_percentile
 
     def clean(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Apply full cleaning workflow."""
         logger.info("Starting data cleaning on %d rows", len(df))
         out = df.copy()
         out = self._standardize_dtypes(out)
@@ -83,7 +81,6 @@ class DataCleaner:
         return df
 
     def detect_outliers_iqr(self, series: pd.Series, factor: float = 1.5) -> pd.Series:
-        """IQR-based outlier flag for analytics."""
         q1, q3 = series.quantile(0.25), series.quantile(0.75)
         iqr = q3 - q1
         lower, upper = q1 - factor * iqr, q3 + factor * iqr

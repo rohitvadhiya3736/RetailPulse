@@ -15,6 +15,7 @@ data/raw/*.csv
 data/processed/
 data/reference/
 artifacts/
+powerbi_exports/
 mlflow/mlruns/
 **/mlruns/
 *.parquet

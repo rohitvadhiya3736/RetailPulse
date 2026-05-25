@@ -1,4 +1,4 @@
-"""Hybrid demand forecasting: Prophet + XGBoost + LSTM ensemble."""
+#Hybrid demand forecasting: Prophet + XGBoost + LSTM ensemble.
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ logger = get_logger(__name__)
 
 
 class LSTMForecaster(nn.Module):
-    """PyTorch LSTM for daily sales sequences."""
+    #PyTorch LSTM for daily sales sequences.
 
     def __init__(
         self,
@@ -40,7 +40,6 @@ class LSTMForecaster(nn.Module):
 
 
 class HybridDemandForecaster:
-    """Ensemble forecaster targeting MAPE ≤ 12%."""
 
     def __init__(self) -> None:
         self.settings = get_settings()

@@ -10,8 +10,6 @@ logger = get_logger(__name__)
 
 
 class FeatureEngineer:
-    """Create all engineered columns per project specification."""
-
     def __init__(self) -> None:
         self.settings = get_settings()
         self.churn_days = int(self.settings.get("data", "churn_threshold_days", default=90))
@@ -186,7 +184,6 @@ class FeatureEngineer:
         return df
 
     def build_customer_rfm_matrix(self, df: pd.DataFrame) -> pd.DataFrame:
-        """RFM matrix for clustering models."""
         snapshot = df["InvoiceDate"].max()
         rfm = df.groupby("Customer ID").agg(
             recency=("InvoiceDate", lambda x: (snapshot - x.max()).days),

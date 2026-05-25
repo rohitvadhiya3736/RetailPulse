@@ -1,4 +1,4 @@
-"""Churn prediction with XGBoost and Optuna hyperparameter tuning."""
+#Churn prediction with XGBoost and Optuna hyperparameter tuning.
 
 from __future__ import annotations
 
@@ -20,8 +20,6 @@ logger = get_logger(__name__)
 
 
 class ChurnPredictor:
-    """Binary churn classifier targeting ROC-AUC ≥ 0.88."""
-
     FEATURES = [
         "CustomerLifetimeValue",
         "AvgOrderValue",

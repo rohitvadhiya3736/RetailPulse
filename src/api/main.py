@@ -1,13 +1,14 @@
-"""RetailPulse REST API – predictions, forecasts, and health checks."""
-
+#RetailPulse REST API – predictions, forecasts, and health checks.
 from __future__ import annotations
 
 from pathlib import Path
+import time
 from typing import Any
 
 import pandas as pd
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request, Response
 from pydantic import BaseModel, Field
+from prometheus_client import CONTENT_TYPE_LATEST, Counter, Gauge, Histogram, generate_latest
 
 from src.config.loader import get_settings
 from src.data.ingestion import DataIngestion
@@ -20,6 +21,51 @@ app = FastAPI(
     description="AI-Powered Customer Analytics & Demand Forecasting",
     version="1.0.0",
 )
+
+REQUEST_COUNT = Counter(
+    "retailpulse_http_requests_total",
+    "Total HTTP requests",
+    ["method", "endpoint", "status_code"],
+)
+REQUEST_LATENCY = Histogram(
+    "retailpulse_http_request_duration_seconds",
+    "HTTP request latency in seconds",
+    ["method", "endpoint"],
+)
+MODEL_METRIC_GAUGE = Gauge(
+    "retailpulse_model_metric",
+    "RetailPulse model quality metric",
+    ["model", "metric"],
+)
+
+
+@app.middleware("http")
+async def prometheus_middleware(request: Request, call_next):
+    start = time.perf_counter()
+    response = await call_next(request)
+    endpoint = request.url.path
+    elapsed = time.perf_counter() - start
+    REQUEST_COUNT.labels(request.method, endpoint, str(response.status_code)).inc()
+    REQUEST_LATENCY.labels(request.method, endpoint).observe(elapsed)
+    return response
+
+
+def _refresh_model_metric_gauges() -> None:
+    settings = get_settings()
+    models_dir = settings.path("paths", "models_dir")
+    metric_files = {
+        "forecasting": models_dir / "forecasting" / "forecast_metrics.json",
+        "churn": models_dir / "churn" / "churn_metrics.json",
+    }
+    for model_name, path in metric_files.items():
+        if not path.exists():
+            continue
+        import json
+
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        for metric_name, value in payload.items():
+            if isinstance(value, (int, float)):
+                MODEL_METRIC_GAUGE.labels(model_name, metric_name).set(float(value))
 
 
 class ChurnRequest(BaseModel):
@@ -49,6 +95,12 @@ def _load_churn_model():
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "healthy", "service": "RetailPulse"}
+
+
+@app.get("/metrics")
+def prometheus_metrics() -> Response:
+    _refresh_model_metric_gauges()
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
 
 @app.get("/api/v1/metrics")

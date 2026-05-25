@@ -17,6 +17,7 @@ logger = get_logger(__name__)
 
 class ExploratoryAnalysis:
 
+    #setup
     def __init__(self, output_dir: Path | None = None) -> None:
         settings = get_settings()
         self.output_dir = output_dir or settings.path("paths", "plots_dir") / "eda"
@@ -32,7 +33,7 @@ class ExploratoryAnalysis:
         self._plot_correlation_heatmap(df)
         self._plot_outlier_analysis(df)
         return summary
-
+    # quick overview before ml apply
     def _summary_statistics(self, df: pd.DataFrame) -> dict:
         summary = {
             "n_rows": len(df),

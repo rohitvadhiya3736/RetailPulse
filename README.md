@@ -348,3 +348,4 @@ Version 2.0 – Industry Edition | March 2026
 MIT License – See [LICENSE](LICENSE) for details.
 # RetailPulse2
 # RetailPulse
+

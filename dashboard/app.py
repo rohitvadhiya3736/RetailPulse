@@ -1,45 +1,60 @@
-"""
-RetailPulse Streamlit Dashboard
-AI-Powered Customer Analytics & Demand Forecasting Platform
-"""
-
+import plotly.io as pio
 import streamlit as st
+
+pio.templates.default = "plotly_white"
 
 st.set_page_config(
     page_title="RetailPulse",
-    page_icon="📊",
+    page_icon=":material/monitoring:",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
+pages = [
+    st.Page(
+        "pages/1_Executive_Overview.py",
+        title="Executive Overview",
+        icon=":material/dashboard:",
+        default=True,
+    ),
+    st.Page(
+        "pages/2_Sales_Analytics.py",
+        title="Sales Analytics",
+        icon=":material/analytics:",
+    ),
+    st.Page(
+        "pages/3_Demand_Forecasting.py",
+        title="Demand Forecasting",
+        icon=":material/trending_up:",
+    ),
+    st.Page(
+        "pages/4_Customer_Segmentation.py",
+        title="Customer Segmentation",
+        icon=":material/groups:",
+    ),
+    st.Page(
+        "pages/5_Churn_Prediction.py",
+        title="Churn Prediction",
+        icon=":material/person_alert:",
+    ),
+    st.Page(
+        "pages/6_Inventory_Optimization.py",
+        title="Inventory Optimization",
+        icon=":material/inventory_2:",
+    ),
+    st.Page(
+        "pages/7_SHAP_Explainability.py",
+        title="SHAP Explainability",
+        icon=":material/model_training:",
+    ),
+    st.Page(
+        "pages/8_Model_Metrics.py",
+        title="Model Metrics",
+        icon=":material/speed:",
+    ),
+]
+
+navigation = st.navigation(pages)
 st.sidebar.title("RetailPulse")
 st.sidebar.caption("AI-Powered Customer Analytics & Demand Forecasting")
-st.sidebar.markdown("---")
-st.sidebar.info(
-    "**Navigation:** Use the sidebar pages to explore analytics, "
-    "forecasts, segmentation, churn, inventory, SHAP, and model metrics."
-)
-
-pages = {
-    "Executive Overview": "pages/1_Executive_Overview.py",
-    "Sales Analytics": "pages/2_Sales_Analytics.py",
-    "Demand Forecasting": "pages/3_Demand_Forecasting.py",
-    "Customer Segmentation": "pages/4_Customer_Segmentation.py",
-    "Churn Prediction": "pages/5_Churn_Prediction.py",
-    "Inventory Optimization": "pages/6_Inventory_Optimization.py",
-    "SHAP Explainability": "pages/7_SHAP_Explainability.py",
-    "Model Metrics": "pages/8_Model_Metrics.py",
-}
-
-st.title("Welcome to RetailPulse")
-st.markdown(
-    """
-    End-to-end retail analytics platform delivering:
-    - **Demand forecasting** (Prophet + XGBoost + LSTM hybrid)
-    - **Customer segmentation** (KMeans + DBSCAN)
-    - **Churn prediction** (XGBoost + Optuna)
-    - **Inventory optimization** with safety stock
-    - **SHAP explainability** and **Evidently drift** monitoring
-    """
-)
-st.markdown("Select a page from the sidebar to begin.")
+navigation.run()

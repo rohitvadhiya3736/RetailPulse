@@ -9,9 +9,12 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
+from airflow.providers.standard.operators.bash import *
+from airflow.providers.standard.operators.python import PythonOperator
+
 from airflow import DAG
-from airflow.operators.bash import BashOperator
-from airflow.operators.python import PythonOperator
+import airflow.operators.bash
+import airflow.operators.python
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))

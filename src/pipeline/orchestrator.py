@@ -1,5 +1,3 @@
-"""End-to-end ML pipeline orchestrator with MLflow tracking."""
-
 from __future__ import annotations
 
 from pathlib import Path
@@ -26,7 +24,7 @@ logger = get_logger(__name__)
 
 
 class RetailPulsePipeline:
-    """Full training and evaluation pipeline."""
+    #training and evaluation pipeline.
 
     def __init__(self) -> None:
         self.settings = get_settings()

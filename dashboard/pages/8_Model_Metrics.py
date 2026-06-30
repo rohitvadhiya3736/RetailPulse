@@ -5,10 +5,10 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from dashboard.utils import load_metrics
+from dashboard.utils import load_metrics, render_data_status, using_demo_data
 
-st.set_page_config(page_title="Model Metrics", layout="wide")
 st.title("Model Metrics & MLOps")
+render_data_status()
 
 metrics = load_metrics()
 root = Path(__file__).resolve().parents[2]
@@ -24,7 +24,7 @@ else:
     st.warning("No metrics found. Run `python scripts/train_all.py`")
 
 drift_report = root / "artifacts/reports/drift_report.html"
-if drift_report.exists():
+if drift_report.exists() and not using_demo_data():
     st.subheader("Evidently Drift Report")
     with open(drift_report) as fh:
         st.components.v1.html(fh.read(), height=600, scrolling=True)

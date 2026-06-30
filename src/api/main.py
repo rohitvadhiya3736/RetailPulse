@@ -67,7 +67,6 @@ def _refresh_model_metric_gauges() -> None:
             if isinstance(value, (int, float)):
                 MODEL_METRIC_GAUGE.labels(model_name, metric_name).set(float(value))
 
-
 class ChurnRequest(BaseModel):
     customer_id: str = Field(..., example="C12345")
     customer_lifetime_value: float = 1500.0

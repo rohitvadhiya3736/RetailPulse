@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: retailpulse-api
+  namespace: retailpulse
+  labels:
+    app: retailpulse-api
+spec:
+  selector:
+    app: retailpulse-api
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+  type: ClusterIP
+

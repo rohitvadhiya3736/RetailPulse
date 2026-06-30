@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: retailpulse-config
+  namespace: retailpulse
+data:
+  RETAILPULSE_CONFIG: /app/src/config/settings.yaml
+  PYTHONPATH: /app
+  OMP_NUM_THREADS: "1"
+  OPENBLAS_NUM_THREADS: "1"
+  MKL_NUM_THREADS: "1"
+  VECLIB_MAXIMUM_THREADS: "1"
+  NUMEXPR_NUM_THREADS: "1"
+  LOKY_MAX_CPU_COUNT: "1"
+  KMP_INIT_AT_FORK: "FALSE"
+  KMP_DUPLICATE_LIB_OK: "TRUE"
+

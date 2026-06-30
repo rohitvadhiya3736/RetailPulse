@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: retailpulse-dashboard
+  namespace: retailpulse
+  labels:
+    app: retailpulse-dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: retailpulse-dashboard
+  template:
+    metadata:
+      labels:
+        app: retailpulse-dashboard
+    spec:
+      containers:
+        - name: dashboard
+          image: rohitvadhiya3736/retailpulse:latest
+          imagePullPolicy: IfNotPresent
+          args: ["dashboard"]
+          ports:
+            - containerPort: 8501
+              name: streamlit
+          envFrom:
+            - configMapRef:
+                name: retailpulse-config
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+            - name: artifacts
+              mountPath: /app/artifacts
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: retailpulse-data
+        - name: artifacts
+          persistentVolumeClaim:
+            claimName: retailpulse-artifacts
+

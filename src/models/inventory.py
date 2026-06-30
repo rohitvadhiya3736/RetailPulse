@@ -1,4 +1,4 @@
-"""Inventory optimization using forecasted demand and safety stock."""
+#Inventory optimization using forecasted demand and safety stock.
 
 from __future__ import annotations
 
@@ -13,7 +13,6 @@ logger = get_logger(__name__)
 
 
 class InventoryOptimizer:
-    """Reorder quantity recommendations per SKU."""
 
     def __init__(self) -> None:
         self.settings = get_settings()

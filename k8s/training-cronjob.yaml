@@ -1,0 +1,44 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: retailpulse-daily-training
+  namespace: retailpulse
+spec:
+  schedule: "0 2 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: train
+              image: rohitvadhiya3736/retailpulse:latest
+              imagePullPolicy: IfNotPresent
+              args: ["train"]
+              envFrom:
+                - configMapRef:
+                    name: retailpulse-config
+              resources:
+                requests:
+                  cpu: "500m"
+                  memory: "2Gi"
+                limits:
+                  cpu: "2"
+                  memory: "6Gi"
+              volumeMounts:
+                - name: data
+                  mountPath: /app/data
+                - name: artifacts
+                  mountPath: /app/artifacts
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: retailpulse-data
+            - name: artifacts
+              persistentVolumeClaim:
+                claimName: retailpulse-artifacts
+

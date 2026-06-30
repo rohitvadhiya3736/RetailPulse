@@ -6,10 +6,10 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from dashboard.utils import load_metrics, load_processed
+from dashboard.utils import load_metrics, load_processed, render_data_status
 
-st.set_page_config(page_title="Churn Prediction", layout="wide")
 st.title("Churn Prediction Analytics")
+render_data_status()
 
 df = load_processed()
 metrics = load_metrics()
@@ -27,13 +27,13 @@ if df.empty or "ChurnFlag" not in df.columns:
 cust = df.groupby("Customer ID").first().reset_index()
 st.plotly_chart(
     px.histogram(cust, x="DaysSinceLastPurchase", color="ChurnFlag", barmode="overlay", title="Recency vs Churn"),
-    use_container_width=True,
+    width="stretch",
 )
 st.plotly_chart(
     px.scatter(cust, x="CustomerLifetimeValue", y="PurchaseFrequency", color="ChurnFlag", title="CLV vs Frequency"),
-    use_container_width=True,
+    width="stretch",
 )
 
 at_risk = cust.nlargest(20, "DaysSinceLastPurchase")[["Customer ID", "CustomerLifetimeValue", "DaysSinceLastPurchase", "ChurnFlag"]]
 st.subheader("Top At-Risk Customers")
-st.dataframe(at_risk, use_container_width=True)
+st.dataframe(at_risk, width="stretch")

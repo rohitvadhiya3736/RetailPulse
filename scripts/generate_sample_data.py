@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-"""Generate synthetic Online Retail-style dataset for RetailPulse."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Tests for raw data column alias normalization."""
+#Tests for raw data column alias normalization.
 
 import pandas as pd
 

@@ -6,11 +6,11 @@ from pathlib import Path
 import plotly.graph_objects as go
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-from dashboard.utils import load_metrics, load_processed
+from dashboard.utils import load_metrics, load_processed, render_data_status
 
-st.set_page_config(page_title="Demand Forecasting", layout="wide")
 st.title("Demand Forecasting")
 st.caption("Hybrid ensemble: Prophet + XGBoost + LSTM")
+render_data_status()
 
 df = load_processed()
 metrics = load_metrics()
@@ -31,6 +31,6 @@ if not df.empty and "daily_sales" in df.columns:
     fig.add_trace(go.Scatter(x=daily["InvoiceDate"], y=daily["actual"], name="Actual"))
     fig.add_trace(go.Scatter(x=daily["InvoiceDate"], y=daily["rolling_7"], name="7-Day Rolling"))
     fig.update_layout(title="Sales with Rolling Average")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 else:
     st.info("Train models to generate forecast plots: `python scripts/train_all.py`")

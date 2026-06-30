@@ -1,4 +1,3 @@
-"""Evidently AI data drift detection (v0.7+ API)."""
 
 from __future__ import annotations
 
@@ -15,8 +14,6 @@ logger = get_logger(__name__)
 
 
 class DriftMonitor:
-    """Compare reference vs current data distributions."""
-
     NUMERIC_FEATURES = [
         "Quantity",
         "Price",
@@ -62,7 +59,6 @@ class DriftMonitor:
 
     @staticmethod
     def _extract_drift_share(snapshot) -> float:
-        """Parse drift share from Evidently snapshot."""
         for metric in snapshot.dict().get("metrics", []):
             if "DriftedColumnsCount" in metric.get("metric_name", ""):
                 share = metric.get("value", {}).get("share")

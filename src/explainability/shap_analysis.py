@@ -1,4 +1,4 @@
-"""SHAP explainability for churn and forecasting models."""
+#SHAP explainability for churn and forecasting models.
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ logger = get_logger(__name__)
 
 
 class SHAPExplainer:
-    """Generate SHAP summary and dependence plots."""
+    #Generate SHAP summary and dependence plots.
 
     def __init__(self, output_dir: Path | None = None) -> None:
         from src.config.loader import get_settings

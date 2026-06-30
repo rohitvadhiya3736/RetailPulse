@@ -1,4 +1,3 @@
-"""Custom exception hierarchy for RetailPulse."""
 
 
 class RetailPulseError(Exception):

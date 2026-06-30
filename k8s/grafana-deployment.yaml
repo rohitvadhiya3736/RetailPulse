@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: retailpulse-grafana
+  namespace: retailpulse
+  labels:
+    app: retailpulse-grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: retailpulse-grafana
+  template:
+    metadata:
+      labels:
+        app: retailpulse-grafana
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana:11.1.0
+          ports:
+            - containerPort: 3000
+              name: http
+          env:
+            - name: GF_SECURITY_ADMIN_USER
+              value: admin
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: admin
+            - name: GF_USERS_ALLOW_SIGN_UP
+              value: "false"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+          volumeMounts:
+            - name: grafana-config
+              mountPath: /etc/grafana/provisioning/datasources/prometheus.yml
+              subPath: prometheus.yml
+            - name: grafana-config
+              mountPath: /etc/grafana/provisioning/dashboards/dashboards.yml
+              subPath: dashboards.yml
+            - name: grafana-dashboard
+              mountPath: /var/lib/grafana/dashboards/retailpulse-overview.json
+              subPath: retailpulse-overview.json
+      volumes:
+        - name: grafana-config
+          configMap:
+            name: retailpulse-grafana-config
+        - name: grafana-dashboard
+          configMap:
+            name: retailpulse-grafana-dashboard

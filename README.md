@@ -1,8 +1,9 @@
 # RetailPulse – AI Powered Customer Analytics & Demand Forecasting Platform
 
-[![CI/CD](https://github.com/your-org/RetailPulse/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/RetailPulse/actions)
+[![CI/CD](https://github.com/rohitvadhiya3736/RetailPulse/actions/workflows/ci.yml/badge.svg)](https://github.com/rohitvadhiya3736/RetailPulse/actions)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Live Dashboard](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://retailpulse.streamlit.app)
 
 > **Predictive Demand • Customer Segmentation • Churn Analysis • Inventory Optimization**
 
@@ -174,6 +175,32 @@ mlflow ui --backend-store-uri mlflow/mlruns
 | Inventory Optimization | Reorder quantities & stock status |
 | SHAP Explainability | Feature importance visualizations |
 | Model Metrics | MLflow metrics & Evidently drift report |
+
+---
+
+## Live Streamlit Deployment
+
+Public dashboard: **https://retailpulse.streamlit.app**
+
+Streamlit Community Cloud settings:
+
+| Setting | Value |
+|---------|-------|
+| Repository | `rohitvadhiya3736/RetailPulse` |
+| Branch | `main` |
+| Main file | `dashboard/app.py` |
+| App URL | `retailpulse` |
+| Python | `3.11` |
+
+The cloud app uses `dashboard/requirements.txt`, which intentionally contains
+only dashboard dependencies. When private datasets and model artifacts are not
+present, the app clearly switches to deterministic synthetic demo data.
+
+Test the same deployment mode locally:
+
+```bash
+RETAILPULSE_DEMO_MODE=1 streamlit run dashboard/app.py
+```
 
 ---
 

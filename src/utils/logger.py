@@ -10,7 +10,7 @@ from src.config.loader import get_settings
 
 
 def get_logger(name: str) -> logging.Logger:
-    """Return a configured logger with console and optional file handler."""
+    #Return a configured logger with console and optional file handler.
     settings = get_settings()
     level = getattr(logging, settings.get("logging", "level", default="INFO"))
     fmt = settings.get("logging", "format", default="%(asctime)s | %(levelname)s | %(name)s | %(message)s")

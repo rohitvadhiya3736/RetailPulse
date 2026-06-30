@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: retailpulse-prometheus
+  namespace: retailpulse
+  labels:
+    app: retailpulse-prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: retailpulse-prometheus
+  template:
+    metadata:
+      labels:
+        app: retailpulse-prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus:v2.53.0
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus"
+          ports:
+            - containerPort: 9090
+              name: http
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+          volumeMounts:
+            - name: config
+              mountPath: /etc/prometheus/prometheus.yml
+              subPath: prometheus.yml
+            - name: storage
+              mountPath: /prometheus
+      volumes:
+        - name: config
+          configMap:
+            name: retailpulse-prometheus-config
+        - name: storage
+          emptyDir: {}
